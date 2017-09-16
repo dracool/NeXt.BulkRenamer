@@ -1,4 +1,9 @@
-﻿using System.Windows;
+﻿/* From Caliburn.MahApps.Metro.Template
+ * https://github.com/cosmo0/Caliburn.MahApps.Metro.Template
+ * MIT License
+ */
+
+using System.Windows;
 using Caliburn.Micro;
 using CaliburnTemplate.Windows;
 
