@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="NeXt.BulkRenamer.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NeXt.BulkRenamer.Views"
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="FileSelection" Margin="5"/>
+
+        <ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="Targets"/>
+        <metro:ProgressRing Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" IsActive="{Binding IsLoading}"/>
+
+        <ContentControl Grid.Row="2" Grid.Column="0" x:Name="PatternSelection" Margin="5"/>
+        <Button Grid.Row="2" Grid.Column="1" x:Name="RenameSelected"
+                Content="Rename Selected" Margin="0,5,5,5"/>
+    </Grid>
+</UserControl>
