@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Caliburn.Micro;
-using Microsoft.Win32;
 using NeXt.BulkRenamer.Models;
 using Ookii.Dialogs.Wpf;
 

@@ -94,10 +94,12 @@
     <Compile Include="AppLoadModule.cs" />
     <Compile Include="AppWindowManager.cs" />
     <Compile Include="Models\BackgroundTextReplacement.cs" />
+    <Compile Include="Models\DirectoryFileListGenerator.cs" />
     <Compile Include="Models\IBackgroundTextReplacement.cs" />
+    <Compile Include="Models\IFileListGenerator.cs" />
     <Compile Include="Models\ITextReplacement.cs" />
     <Compile Include="Models\ITextReplacementFactory.cs" />
-    <Compile Include="Models\MultipleSelectionLoader.cs" />
+    <Compile Include="Models\StaticFileListGenerator.cs" />
     <Compile Include="Models\TextPatternReplacement.cs" />
     <Compile Include="Models\TextPatternReplacementFactory.cs" />
     <Compile Include="ViewModels\FileSelectionViewModel.cs" />
