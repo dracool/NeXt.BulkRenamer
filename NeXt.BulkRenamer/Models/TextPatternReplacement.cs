@@ -7,30 +7,48 @@ namespace NeXt.BulkRenamer.Models
 {
     internal class TextPatternReplacement : ITextReplacement
     {
-        private static readonly Regex FindGroups = new Regex("<[^<>]+?>|\\\\[+-?$]*[\\p{L}\\p{N}]+", RegexOptions.Compiled);
-
         //syntax:
-        //uppercase: <+VALUE>
-        //lowercase: <-VALUE>
-        //trim: <?VALUE>
-
-        private enum GroupKind
-        {
-            Text,
-            IndexedGroup,
-            NamedGroup,
-        }
-
-        private enum GroupAction
-        {
-            UppercaseFirst,
-            Uppercase,
-            Lowecase,
-            Trim,
-        }
-
+        //uppercase: <+VALUE> \+VALUE
+        //lowercase: <-VALUE> \-VALUE
+        //trim:      <?VALUE> \?VALUE
+        //capitlize: <$VALUE> \$VALUE
+        
+        // regex explanation: 
+        // Modifier Symbol:             [+-?$]     
+        // Identiier Symbol:            [\p{L}\p{N}]
+        // Modifier List:               [+-?$]*     
+        // Identiier:                   [\p{L}\p{N}]+
+        // identifier with modifier:    [+-?$]*[\p{L}\p{N}]+
+        // <> type group:               <[+-?$]*[\p{L}\p{N}]+?>
+        // \ type group:                \\[+-?$]*[\p{L}\p{N}]+
+        // actual regex:                <> type or \ type
+        
+        /// <summary>
+        /// gets matches for group value replacements
+        /// </summary>
+        private static readonly Regex FindGroups = new Regex("<[+-?$]*[\\p{L}\\p{N}]+?>|\\\\[+-?$]*[\\p{L}\\p{N}]+", RegexOptions.Compiled);
+        
         private class Group
         {
+
+            private enum GroupKind
+            {
+                Text,
+                IndexedGroup,
+                NamedGroup,
+            }
+
+            private enum GroupAction
+            {
+                Capitalize, // $
+                Uppercase,  // +
+                Lowecase,   // -
+                Trim,       // ?
+            }
+
+            /// <summary>
+            /// creates a replacement group that outputs static text
+            /// </summary>
             public static Group FromText(string text)
             {
                 return new Group(text, -1, GroupKind.Text, new GroupAction[0]);
@@ -55,7 +73,7 @@ namespace NeXt.BulkRenamer.Models
                             list.Add(GroupAction.Trim);
                             break;
                         case '$':
-                            list.Add(GroupAction.UppercaseFirst);
+                            list.Add(GroupAction.Capitalize);
                             break;
                         default: goto GetName;
                     }
@@ -102,7 +120,7 @@ namespace NeXt.BulkRenamer.Models
                 {
                     switch (action)
                     {
-                        case GroupAction.UppercaseFirst:
+                        case GroupAction.Capitalize:
                             if (input.Length > 0)
                             {
                                 input = input[0].ToString().ToUpper() + input.Substring(1);

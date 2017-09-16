@@ -17,7 +17,7 @@ namespace NeXt.BulkRenamer
             Initialize();
         }
 
-        protected IContainer Container;
+        protected IContainer Container { get; private set; }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
@@ -67,12 +67,12 @@ namespace NeXt.BulkRenamer
         {
             if (string.IsNullOrWhiteSpace(key))
             {
-                if (Container.TryResolve(service, out object instance))
+                if (Container.TryResolve(service, out var instance))
                     return instance;
             }
             else
             {
-                if (Container.TryResolveNamed(key, service, out object instance))
+                if (Container.TryResolveNamed(key, service, out var instance))
                     return instance;
             }
 

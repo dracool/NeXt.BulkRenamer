@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using WeakEvent;
 
@@ -19,45 +20,47 @@ namespace NeXt.BulkRenamer.Models
             sources = new List<TaskCompletionSource<string>>();
         }
         
+        /// <summary>
+        /// Sets the new regex and invalidates results
+        /// </summary>
         public void SetRegex(Regex r)
         {
             regex = r;
-            foreach (var source in sources)
-            {
-                source.TrySetCanceled();
-            }
-            sources.Clear();
-            invaliated.Raise(this, EventArgs.Empty);
+            Invalidate();
         }
 
+        /// <summary>
+        /// Sets the new replacement and invalidates results
+        /// </summary>
         public void SetReplacement(ITextReplacement r)
         {
             replacement = r;
-            foreach (var source in sources)
-            {
-                source.TrySetCanceled();
-            }
-            sources.Clear();
-            invaliated.Raise(this, EventArgs.Empty);
+            Invalidate();
         }
-
+        
+        /// <summary>
+        /// Sets whether extensions are included in the regex and invalidates results
+        /// </summary>
         public void SetMatchExtension(bool m)
         {
             matchExtension = m;
-            foreach (var source in sources)
-            {
-                source.TrySetCanceled();
-            }
-            sources.Clear();
-            invaliated.Raise(this, EventArgs.Empty);
+            Invalidate();
         }
 
         private bool matchExtension;
 
+        /// <summary>
+        /// Gets a new result value from the original value given
+        /// </summary>
         public Task<string> RunAsync(string value)
         {
             var tcs = new TaskCompletionSource<string>();
-            Task.Factory.StartNew(() => Execute(regex, replacement, value, tcs, matchExtension));
+            Task.Factory.StartNew(
+                () => Execute(regex, replacement, value, tcs, matchExtension),
+                CancellationToken.None,
+                TaskCreationOptions.LongRunning,
+                TaskScheduler.Default
+            );
             sources.Add(tcs);
             return tcs.Task;
         }
@@ -72,9 +75,10 @@ namespace NeXt.BulkRenamer.Models
                 }
                 else
                 {
+                    //remove extension, run, re-add extension
                     var ext = Path.GetExtension(value);
                     value = replacement.Apply(Path.ChangeExtension(value, null), regex);
-                    value += ext;
+                    value += ext; //manually append to not mess up file names container dots
                 }
 
                 tcs.TrySetResult(value);
@@ -85,7 +89,23 @@ namespace NeXt.BulkRenamer.Models
             }
         }
 
+        /// <summary>
+        /// invalidate current and in-progress results
+        /// </summary>
+        private void Invalidate()
+        {
+            foreach (var source in sources)
+            {
+                source.TrySetCanceled();
+            }
+            sources.Clear();
+            invaliated.Raise(this, EventArgs.Empty);
+        }
+
         private readonly WeakEventSource<EventArgs> invaliated;
+        /// <summary>
+        /// Invoked when the current or in progress result values are no longer valid due to property changes
+        /// </summary>
         public event EventHandler<EventArgs> Invalidated
         {
             add => invaliated.Subscribe(value);
