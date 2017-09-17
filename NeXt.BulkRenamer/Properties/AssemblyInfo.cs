@@ -7,12 +7,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NeXt.BulkRenamer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Bulk Regex Renamer")]
+[assembly: AssemblyDescription("A small tool to rename multiple files at once using regular expressions.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NeXt.BulkRenamer")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyProduct("Bulk Regex Renamer")]
+[assembly: AssemblyCopyright("Copyright © Mirco Gericke 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
