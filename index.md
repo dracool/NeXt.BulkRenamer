@@ -1,5 +1,3 @@
-## Bulk Regex Renamer
-A small tool to rename multiple files at once using regular expressions.
 ![Preview](https://github.com/dracool/NeXt.BulkRenamer/raw/gh-pages/image.png)
 
 ### Download
