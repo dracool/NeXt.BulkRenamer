@@ -1,0 +1,21 @@
+﻿<!--
+ * From Caliburn.MahApps.Metro.Template
+ * https://github.com/cosmo0/Caliburn.MahApps.Metro.Template
+ * MIT License    
+-->
+    
+<controls:MetroWindow
+    x:Class="CaliburnTemplate.Windows.BaseWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    Title="BaseWindow"
+    Height="600"
+    Width="800"
+    WindowState="Normal"
+    WindowStartupLocation="CenterOwner"
+    ResizeMode="CanResizeWithGrip"
+    BorderThickness="1"
+    BorderBrush="{DynamicResource AccentColorBrush}">
+    <Grid />
+</controls:MetroWindow>
