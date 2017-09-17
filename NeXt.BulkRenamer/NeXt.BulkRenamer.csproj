@@ -120,9 +120,6 @@
     <Compile Include="Views\PatternSelectionView.xaml.cs">
       <DependentUpon>PatternSelectionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RenameTargetView.xaml.cs">
-      <DependentUpon>RenameTargetView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\BaseDialogWindow.xaml.cs">
       <DependentUpon>BaseDialogWindow.xaml</DependentUpon>
     </Compile>
@@ -147,10 +144,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PatternSelectionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\RenameTargetView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
