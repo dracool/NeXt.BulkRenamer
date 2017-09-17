@@ -7,9 +7,12 @@
              xmlns:ad="http://gu.se/Adorners"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
+             Focusable="False"
              d:DesignHeight="80" d:DesignWidth="600">
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
@@ -20,18 +23,26 @@
         </Grid.RowDefinitions>
 
         <TextBox Grid.Row="0" Grid.Column="0" x:Name="RegexText"
+                 Grid.ColumnSpan="2"
                  Margin="0,0,3,0"
                  ad:Watermark.Text="Regular Expression"
-                 ad:Watermark.VisibleWhen="Empty"/>
-        <TextBox Grid.Row="0" Grid.Column="1" x:Name="PatternText"
+                 ad:Watermark.VisibleWhen="Empty"
+                 VerticalContentAlignment="Center"
+                 FontFamily="Courier New"/>
+        <TextBox Grid.Row="0" Grid.Column="2" x:Name="PatternText"
+                 Grid.ColumnSpan="2"
                  Margin="3,0,0,0"
                  ad:Watermark.Text="Replacement Pattern"
-                 ad:Watermark.VisibleWhen="Empty"/>
+                 ad:Watermark.VisibleWhen="Empty"
+                 VerticalContentAlignment="Center"
+                 FontFamily="Courier New"/>
 
-        <CheckBox Grid.Row="1" Grid.Column="0" x:Name="IgnoreCase" VerticalAlignment="Center" Content="Ignore Case"/>
-        <CheckBox Grid.Row="2" Grid.Column="0" x:Name="MatchExtension" VerticalAlignment="Center" Content="Match Extension"/>
+        <CheckBox Grid.Row="1" Grid.Column="0" x:Name="IgnoreCase" Margin="0,2,2,0" VerticalAlignment="Center" Content="Ignore Case"/>
+        <CheckBox Grid.Row="1" Grid.Column="1" x:Name="AllowWhitespace" Margin="0,2,2,0" VerticalAlignment="Center" Content="Whitespace in Regex"/>
+        <CheckBox Grid.Row="2" Grid.Column="0" x:Name="MatchExtension" Margin="0,2,2,0" VerticalAlignment="Center" Content="Match Extension"/>
+        <CheckBox Grid.Row="2" Grid.Column="1" x:Name="RightToLeft" Margin="0,2,2,0" VerticalAlignment="Center" Content="Right to Left"/>
 
-        <Viewbox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Width="18" IsHitTestVisible="True" Panel.ZIndex="1">
+        <Viewbox Grid.Row="0" Grid.Column="3" HorizontalAlignment="Right" Width="18" IsHitTestVisible="True" Panel.ZIndex="1">
             <Canvas Width="24" Height="24" Background="#01000000">
                 <Path Data="M10,19H13V22H10V19M12,2C17.35,2.22 19.68,7.62 16.5,11.67C15.67,12.67 14.33,13.33 13.67,14.17C13,15 13,16 13,17H10C10,15.33 10,13.92 10.67,12.92C11.33,11.92 12.67,11.33 13.5,10.67C15.92,8.43 15.32,5.26 12,5A3,3 0 0,0 9,8H6A6,6 0 0,1 12,2Z" Fill="{DynamicResource AccentBaseColorBrush}" />
             </Canvas>

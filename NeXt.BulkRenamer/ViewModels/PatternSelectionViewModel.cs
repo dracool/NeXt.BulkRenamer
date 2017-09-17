@@ -12,6 +12,8 @@ namespace NeXt.BulkRenamer.ViewModels
         private string regexText;
         private string patternText;
         private bool matchExtension;
+        private bool allowWhitespace;
+        private bool rightToLeft;
 
         public PatternSelectionViewModel(IBackgroundTextReplacement replacer)
         {
@@ -25,6 +27,26 @@ namespace NeXt.BulkRenamer.ViewModels
             {
                 matchExtension = value;
                 replacer.SetMatchExtension(matchExtension);
+            }
+        }
+
+        public bool RightToLeft
+        {
+            get => rightToLeft;
+            set
+            {
+                rightToLeft = value;
+                UpdateRegex();
+            }
+        }
+
+        public bool AllowWhitespace
+        {
+            get => allowWhitespace;
+            set
+            {
+                allowWhitespace = value;
+                UpdateRegex();
             }
         }
 
@@ -75,7 +97,9 @@ namespace NeXt.BulkRenamer.ViewModels
             var options = RegexOptions.Compiled;
 
             if (IgnoreCase) options |= RegexOptions.IgnoreCase;
-            
+            if (AllowWhitespace) options |= RegexOptions.IgnorePatternWhitespace;
+            if (RightToLeft) options |= RegexOptions.RightToLeft;
+
             try
             {
                 var regex = new Regex(RegexText, options);
