@@ -64,6 +64,9 @@
       <HintPath>..\packages\PropertyChanged.Fody.2.1.4\lib\netstandard1.0\PropertyChanged.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Sprache, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sprache.2.1.0\lib\net40\Sprache.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -93,15 +96,25 @@
     </ApplicationDefinition>
     <Compile Include="AppLoadModule.cs" />
     <Compile Include="AppWindowManager.cs" />
-    <Compile Include="Models\BackgroundTextReplacement.cs" />
+    <Compile Include="Models\Background\BackgroundEngine.cs" />
+    <Compile Include="Models\Background\FileInfoExtensions.cs" />
+    <Compile Include="Models\Background\IBackgroundEngine.cs" />
+    <Compile Include="Models\Background\IReplacement.cs" />
+    <Compile Include="Models\Background\IReplacementTarget.cs" />
     <Compile Include="Models\DirectoryFileListGenerator.cs" />
-    <Compile Include="Models\IBackgroundTextReplacement.cs" />
     <Compile Include="Models\IFileListGenerator.cs" />
-    <Compile Include="Models\ITextReplacement.cs" />
-    <Compile Include="Models\ITextReplacementFactory.cs" />
+    <Compile Include="Models\Parsing\ConstantResultPart.cs" />
+    <Compile Include="Models\Parsing\DefaultIndexedTagResultPart.cs" />
+    <Compile Include="Models\Parsing\DefaultNamedTagResultPart.cs" />
+    <Compile Include="Models\Parsing\DefaultTagFormat.cs" />
+    <Compile Include="Models\Parsing\GrammarReplacementFactory.cs" />
+    <Compile Include="Models\Parsing\GrammarTextReplacement.cs" />
+    <Compile Include="Models\Parsing\IReplacementFactory.cs" />
+    <Compile Include="Models\Parsing\NowResultPart.cs" />
+    <Compile Include="Models\Parsing\NResultPart.cs" />
+    <Compile Include="Models\Parsing\IResultPart.cs" />
+    <Compile Include="Models\Parsing\Results.cs" />
     <Compile Include="Models\StaticFileListGenerator.cs" />
-    <Compile Include="Models\TextPatternReplacement.cs" />
-    <Compile Include="Models\TextPatternReplacementFactory.cs" />
     <Compile Include="ViewModels\FileSelectionViewModel.cs" />
     <Compile Include="ViewModels\IRenameTargetViewModelFactory.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

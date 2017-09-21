@@ -2,12 +2,15 @@
 using System.Text.RegularExpressions;
 using Caliburn.Micro;
 using NeXt.BulkRenamer.Models;
+using NeXt.BulkRenamer.Models.Background;
+using NeXt.BulkRenamer.Models.Parsing;
 
 namespace NeXt.BulkRenamer.ViewModels
 {
     internal class PatternSelectionViewModel : PropertyChangedBase
     {
-        private readonly IBackgroundTextReplacement replacer;
+        private readonly IReplacementFactory replacementFactory;
+        private readonly IBackgroundEngine replacer;
         private bool ignoreCase;
         private string regexText;
         private string patternText;
@@ -15,9 +18,10 @@ namespace NeXt.BulkRenamer.ViewModels
         private bool allowWhitespace;
         private bool rightToLeft;
 
-        public PatternSelectionViewModel(IBackgroundTextReplacement replacer)
+        public PatternSelectionViewModel(IBackgroundEngine replacer, IReplacementFactory replacementFactory)
         {
             this.replacer = replacer;
+            this.replacementFactory = replacementFactory;
         }
 
         public bool MatchExtension
@@ -26,7 +30,7 @@ namespace NeXt.BulkRenamer.ViewModels
             set
             {
                 matchExtension = value;
-                replacer.SetMatchExtension(matchExtension);
+                replacer.UpdateMatchExtension(matchExtension);
             }
         }
 
@@ -89,7 +93,7 @@ namespace NeXt.BulkRenamer.ViewModels
 
         private void UpdatePattern()
         {
-            replacer.SetReplacement(new TextPatternReplacement(PatternText));
+            replacer.UpdateReplacement(replacementFactory.Create(PatternText));
         }
 
         private void UpdateRegex()
@@ -100,13 +104,17 @@ namespace NeXt.BulkRenamer.ViewModels
             if (AllowWhitespace) options |= RegexOptions.IgnorePatternWhitespace;
             if (RightToLeft) options |= RegexOptions.RightToLeft;
 
+            Regex regex;
             try
             {
-                var regex = new Regex(RegexText, options);
-                replacer.SetRegex(regex);
+                regex = new Regex(RegexText, options);
             }
-            catch (ArgumentException) { }
+            catch (Exception)
+            {
+                regex = null;
+            }
 
+            replacer.UpdateRegex(regex);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Autofac;
 using NeXt.BulkRenamer.Models;
+using NeXt.BulkRenamer.Models.Background;
+using NeXt.BulkRenamer.Models.Parsing;
 using NeXt.BulkRenamer.ViewModels;
 
 namespace NeXt.BulkRenamer
@@ -9,12 +11,12 @@ namespace NeXt.BulkRenamer
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<TextPatternReplacementFactory>()
-                   .As<ITextReplacementFactory>()
+            builder.RegisterType<BackgroundEngine>()
+                   .As<IBackgroundEngine>()
                    .SingleInstance();
 
-            builder.RegisterType<BackgroundTextReplacement>()
-                   .As<IBackgroundTextReplacement>()
+            builder.RegisterType<GrammarReplacementFactory>()
+                   .As<IReplacementFactory>()
                    .SingleInstance();
 
             builder.RegisterType<RenameTargetViewModelFactory>()

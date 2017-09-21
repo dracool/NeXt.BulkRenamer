@@ -1,19 +1,14 @@
-﻿using NeXt.BulkRenamer.Models;
+﻿using System.IO;
+using NeXt.BulkRenamer.Models;
+using NeXt.BulkRenamer.Models.Background;
 
 namespace NeXt.BulkRenamer.ViewModels
 {
     internal class RenameTargetViewModelFactory : IRenameTargetViewModelFactory
     {
-        private readonly IBackgroundTextReplacement replacer;
-
-        public RenameTargetViewModelFactory(IBackgroundTextReplacement replacer)
+        public RenameTargetViewModel Create(FileInfo value)
         {
-            this.replacer = replacer;
-        }
-
-        public RenameTargetViewModel Create(string value)
-        {
-            return new RenameTargetViewModel(value, replacer);
+            return new RenameTargetViewModel(value);
         }
     }
 }

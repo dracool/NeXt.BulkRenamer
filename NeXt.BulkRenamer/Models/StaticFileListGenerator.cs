@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace NeXt.BulkRenamer.Models
 {
@@ -6,11 +8,10 @@ namespace NeXt.BulkRenamer.Models
     {
         public StaticFileListGenerator(IEnumerable<string> values)
         {
-            this.values = values;
+            this.values = values.Select(fn => new FileInfo(fn));
         }
 
-        private readonly IEnumerable<string> values;
-
-        public IEnumerable<string> Generate() => values;
+        private readonly IEnumerable<FileInfo> values;
+        public IEnumerable<FileInfo> Generate() => values;
     }
 }

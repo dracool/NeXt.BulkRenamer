@@ -1,64 +1,46 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using Caliburn.Micro;
+using MahApps.Metro;
 using NeXt.BulkRenamer.Models;
+using NeXt.BulkRenamer.Models.Background;
+using PropertyChanged;
 
 namespace NeXt.BulkRenamer.ViewModels
 {
-    internal class RenameTargetViewModel : PropertyChangedBase
+    internal class RenameTargetViewModel : PropertyChangedBase, IReplacementTarget
     {
-        public RenameTargetViewModel(string value, IBackgroundTextReplacement backgroundReplacer)
+        public RenameTargetViewModel(FileInfo value)
         {
-            replacement = backgroundReplacer;
-            replacement.Invalidated += UpdateName;
-            FilePath = value;
-            OriginalName = Path.GetFileName(FilePath);
+            Source = value;
+            OriginalName = Source.Name;
         }
 
-        public string FilePath { get; }
+        public FileInfo Source { get; }
+        public string OriginalName { get; }
 
-        private readonly IBackgroundTextReplacement replacement;
+        [AlsoNotifyFor(nameof(DisplayResultName))]
+        public bool Enabled { get; set; } = true;
 
-        private bool enabled = true;
+        [AlsoNotifyFor(nameof(DisplayResultName))]
+        public bool Success { get; set; } = true;
 
-        public bool Enabled
-        {
-            get => enabled;
-            set
-            {
-                enabled = value;
-                UpdateName(this, EventArgs.Empty);
-            }
-        }
-
-        private string originalName;
-        public string OriginalName
-        {
-            get => originalName;
-            set
-            {
-                originalName = value;
-                UpdateName(this, EventArgs.Empty);
-            }
-        }
+        [AlsoNotifyFor(nameof(DisplayResultName))]
+        public string ResultName { get; set; }
         
-        public string ResultName { get; private set; }
-
-        private async void UpdateName(object sender, EventArgs e)
+        public string DisplayResultName
         {
-            if (!Enabled)
+            get
             {
-                ResultName = string.Empty;
-                return;
+                if (!Enabled)
+                {
+                    return string.Empty;
+                }
+
+                return Success ? ResultName : "<invalid>";
             }
-            
-            try
-            {
-                var value = await replacement.RunAsync(OriginalName);
-                ResultName = value ?? "<invalid>";
-            }
-            catch(TaskCanceledException) { }
         }
     }
 }

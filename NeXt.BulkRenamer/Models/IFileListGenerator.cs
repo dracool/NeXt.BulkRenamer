@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 
 namespace NeXt.BulkRenamer.Models
 {
     internal interface IFileListGenerator
     {
-        IEnumerable<string> Generate();
+        IEnumerable<FileInfo> Generate();
     }
 }
