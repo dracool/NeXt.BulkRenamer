@@ -34,7 +34,6 @@ namespace NeXt.BulkRenamer.Models.Parsing
         
         private static string ToRoman(int number, string format)
         {
-            if (format == null) throw new ArgumentNullException(nameof(format));
             if (number < 0 || number > 9999) throw new ArgumentOutOfRangeException(nameof(number));
             
             var lower = format == "-";
