@@ -25,6 +25,10 @@ namespace NeXt.BulkRenamer.Models.Parsing
                 case "now": return new DateResultPart(format, fi => DateTime.Now);
                 case "creation": return new DateResultPart(format, fi => fi.CreationTime);
                 case "creationutc": return new DateResultPart(format, fi => fi.CreationTimeUtc);
+                case "lastwrite": return new DateResultPart(format, fi => fi.LastWriteTime);
+                case "lastwriteutc": return new DateResultPart(format, fi => fi.LastWriteTimeUtc);
+                case "lastaccess": return new DateResultPart(format, fi => fi.LastAccessTime);
+                case "lastaccessutc": return new DateResultPart(format, fi => fi.LastAccessTimeUtc);
                 default: throw new InvalidOperationException($"The special tag does not exist: {name}");
             }
         }
