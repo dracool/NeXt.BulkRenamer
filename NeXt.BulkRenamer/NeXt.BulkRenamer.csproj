@@ -107,12 +107,14 @@
     <Compile Include="Models\Parsing\DefaultIndexedTagResultPart.cs" />
     <Compile Include="Models\Parsing\DefaultNamedTagResultPart.cs" />
     <Compile Include="Models\Parsing\DefaultTagFormat.cs" />
+    <Compile Include="Models\Parsing\FileInfoResultPart.cs" />
     <Compile Include="Models\Parsing\GrammarReplacementFactory.cs" />
     <Compile Include="Models\Parsing\GrammarTextReplacement.cs" />
     <Compile Include="Models\Parsing\IReplacementFactory.cs" />
     <Compile Include="Models\Parsing\NowResultPart.cs" />
     <Compile Include="Models\Parsing\NResultPart.cs" />
     <Compile Include="Models\Parsing\IResultPart.cs" />
+    <Compile Include="Models\Parsing\NRomanResultPart.cs" />
     <Compile Include="Models\Parsing\Results.cs" />
     <Compile Include="Models\StaticFileListGenerator.cs" />
     <Compile Include="ViewModels\FileSelectionViewModel.cs" />

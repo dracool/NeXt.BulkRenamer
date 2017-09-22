@@ -5,21 +5,28 @@ using System.Text.RegularExpressions;
 
 namespace NeXt.BulkRenamer.Models.Parsing
 {
-    internal class DateResultPart : IResultPart
+    internal class NowResultPart : IResultPart
     {
         [DebuggerStepThrough]
-        public DateResultPart(string format, Func<FileInfo, DateTime> source)
+        public NowResultPart(string format)
         {
-            this.source = source;
+            date = DateTime.Now;
             this.format = format ?? "yyyy-MM-dd";
         }
 
-        private readonly Func<FileInfo, DateTime> source;
+        [DebuggerStepThrough]
+        public NowResultPart(DateTime date, string format)
+        {
+            this.date = date;
+            this.format = format ?? "yyyy-MM-dd";
+        }
+
+        private readonly DateTime date;
         private readonly string format;
 
         public virtual string Process(GroupCollection matches, FileInfo file)
         {
-            return source(file).ToString(format);
+            return date.ToString(format);
         }
 
         public override string ToString()
