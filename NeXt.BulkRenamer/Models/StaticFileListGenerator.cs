@@ -8,10 +8,10 @@ namespace NeXt.BulkRenamer.Models
     {
         public StaticFileListGenerator(IEnumerable<string> values)
         {
-            this.values = values.Select(fn => new FileInfo(fn));
+            this.values = values;
         }
 
-        private readonly IEnumerable<FileInfo> values;
-        public IEnumerable<FileInfo> Generate() => values;
+        private readonly IEnumerable<string> values;
+        public IEnumerable<string> Generate() => values;
     }
 }

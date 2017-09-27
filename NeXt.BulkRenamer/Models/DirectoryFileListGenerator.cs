@@ -8,17 +8,17 @@ namespace NeXt.BulkRenamer.Models
 {
     internal class DirectoryFileListGenerator : IFileListGenerator
     {
-        private readonly Lazy<IEnumerable<FileInfo>> result;
+        private readonly Lazy<IEnumerable<string>> result;
 
         public DirectoryFileListGenerator(string directoryPath, bool recursive)
         {
-            result = new Lazy<IEnumerable<FileInfo>>(
-                () => Directory.EnumerateFiles(directoryPath, "*", recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Select(fn => new FileInfo(fn)),
+            result = new Lazy<IEnumerable<string>>(
+                () => Directory.EnumerateFiles(directoryPath, "*", recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly),
                 LazyThreadSafetyMode.ExecutionAndPublication
             );
         }
 
-        public IEnumerable<FileInfo> Generate()
+        public IEnumerable<string> Generate()
         {
             return result.Value;
         }

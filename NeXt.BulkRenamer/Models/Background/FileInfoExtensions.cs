@@ -1,9 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Data;
-using System.Windows.Threading;
 
 namespace NeXt.BulkRenamer.Models.Background
 {

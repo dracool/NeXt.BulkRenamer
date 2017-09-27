@@ -38,9 +38,9 @@
                  FontFamily="Courier New"/>
 
         <CheckBox Grid.Row="1" Grid.Column="0" x:Name="IgnoreCase" Margin="0,2,2,0" VerticalAlignment="Center" Content="Ignore Case"/>
-        <CheckBox Grid.Row="1" Grid.Column="1" x:Name="AllowWhitespace" Margin="0,2,2,0" VerticalAlignment="Center" Content="Whitespace in Regex"/>
-        <CheckBox Grid.Row="2" Grid.Column="0" x:Name="MatchExtension" Margin="0,2,2,0" VerticalAlignment="Center" Content="Match Extension"/>
-        <CheckBox Grid.Row="2" Grid.Column="1" x:Name="RightToLeft" Margin="0,2,2,0" VerticalAlignment="Center" Content="Right to Left"/>
+        <CheckBox Grid.Row="1" Grid.Column="1" x:Name="AllowWhitespace" Margin="0,2,2,0" VerticalAlignment="Center" Content="Whitespace in Regex" />
+        <CheckBox Grid.Row="1" Grid.Column="2" x:Name="MatchExtension" Margin="3,2,2,0" VerticalAlignment="Center" Content="Match Extension"/>
+        <CheckBox Grid.Row="1" Grid.Column="3" x:Name="RightToLeft" Margin="0,2,2,0" VerticalAlignment="Center" Content="Right to Left"/>
 
         <Viewbox Grid.Row="0" Grid.Column="3" HorizontalAlignment="Right" Width="18" IsHitTestVisible="True" Panel.ZIndex="1">
             <Canvas Width="24" Height="24" Background="#01000000">

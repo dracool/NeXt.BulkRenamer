@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
+using NeXt.BulkRenamer.Models.Background;
 
 namespace NeXt.BulkRenamer.Models.Parsing
 {
@@ -24,7 +25,7 @@ namespace NeXt.BulkRenamer.Models.Parsing
         private readonly DateTime date;
         private readonly string format;
 
-        public virtual string Process(GroupCollection matches, FileInfo file)
+        public virtual string Process(GroupCollection matches, IReplacementTarget target)
         {
             return date.ToString(format);
         }

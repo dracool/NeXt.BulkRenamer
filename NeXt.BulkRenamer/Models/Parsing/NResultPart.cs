@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
+using NeXt.BulkRenamer.Models.Background;
 
 namespace NeXt.BulkRenamer.Models.Parsing
 {
@@ -11,20 +12,20 @@ namespace NeXt.BulkRenamer.Models.Parsing
         public NResultPart(string format, int startValue = 0)
         {
             this.format = format ?? "G";
-            current = startValue - 1;
+            this.startValue = startValue;
         }
 
-        private int current;
+        private readonly int startValue;
         private readonly string format;
 
-        public virtual string Process(GroupCollection matches, FileInfo file)
+        public virtual string Process(GroupCollection matches, IReplacementTarget target)
         {
-            return Interlocked.Increment(ref current).ToString(format);
+            return (startValue + target.Index).ToString(format);
         }
 
         public override string ToString()
         {
-            return $"{current.ToString(format)} [Consecutive]";
+            return $"{startValue.ToString(format)} [Consecutive]";
         }
     }
 }

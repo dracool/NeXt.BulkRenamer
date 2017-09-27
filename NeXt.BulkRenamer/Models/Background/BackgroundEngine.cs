@@ -1,110 +1,97 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using NeXt.BulkRenamer.Utility;
 
 namespace NeXt.BulkRenamer.Models.Background
 {
     internal class BackgroundEngine : IBackgroundEngine
     {
-        private class Job
+        private void Execute(CancellationToken cancel)
         {
-            public static Job Start(IReadOnlyList<IReplacementTarget> targets, IReplacement replacement, Regex regex, bool matchExtension)
+            if (targets == null) return;
+            foreach (var target in targets)
             {
-                void Execute(CancellationToken cancel)
-                {
-                    if (targets == null) return;
-
-                    foreach (var target in targets)
-                    {
-                        try
-                        {
-                            if (cancel.IsCancellationRequested) return;
-                            
-                            if (replacement == null || regex == null)
-                            {
-                                target.Success = false;
-                                continue;
-                            }
-
-                            var text = replacement.Apply(
-                                regex,
-                                matchExtension ? target.Source.Name : target.Source.NameWithoutExtension(),
-                                target.Source
-                            );
-                            if (!matchExtension) text += target.Source.Extension;
-
-                            if (cancel.IsCancellationRequested) return;
-
-                            target.ResultName = text;
-                            target.Success = true;
-                        }
-                        catch (Exception)
-                        {
-                            target.Success = false;
-                        }
-                    }
-                }
-
-                return new Job(Execute);
-            }
-
-            private Job(Action<CancellationToken> action)
-            {
-                cts = new CancellationTokenSource();
-                task = Task.Run(() => action(cts.Token));
-            }
-
-            private readonly Task task;
-            private readonly CancellationTokenSource cts;
-
-            public void Cancel()
-            {
-                cts.Cancel();
+                if (cancel.IsCancellationRequested) return;
+                ExecuteSingle(target, cancel);
             }
         }
 
-        private IReadOnlyList<IReplacementTarget> targets;
-        private IReplacement replacement;
-        private Regex regex;
-        private bool matchExtension;
+        private void ExecuteSingle(IReplacementTarget target, CancellationToken cancel)
+        {
+            try
+            {
+                if (replacement == null || regex == null)
+                {
+                    target.Success = false;
+                    return;
+                }
+
+                var text = replacement.Apply(
+                    regex,
+                    matchExtension ? target.SourceName : Path.GetFileNameWithoutExtension(target.SourceName),
+                    target
+                );
+                if (!matchExtension) text += Path.GetExtension(target.SourceName);
+
+                if (cancel.IsCancellationRequested) return;
+
+                target.ResultName = text;
+                target.Success = true;
+            }
+            catch (Exception)
+            {
+                target.Success = false;
+            }
+        }
         
         private readonly object runLock = new object();
-        private Job running;
-        
-        public void UpdateTargets(IReadOnlyList<IReplacementTarget> value)
+
+        private IReadOnlyCollection<IReplacementTarget> targets;
+        private IReplacement replacement;
+        private bool matchExtension;
+        private Regex regex;
+
+        public void ExecuteFor(IReplacementTarget target)
+        {
+            ExecuteSingle(target, CancellationToken.None);
+        }
+       
+        public void UpdateTargets(IReadOnlyCollection<IReplacementTarget> value)
         {
             targets = value;
             Invalidate();
         }
-
         public void UpdateReplacement(IReplacement value)
         {
             replacement = value;
             Invalidate();
         }
-
         public void UpdateRegex(Regex value)
         {
             regex = value;
             Invalidate();
         }
-
         public void UpdateMatchExtension(bool value)
         {
             matchExtension = value;
             Invalidate();
         }
-
+        
+        private CancellationTokenSource cts;
+        private Task running;
         private void Invalidate()
         {
             lock (runLock)
             {
-                running?.Cancel();
-                running = Job.Start(targets, replacement, regex, matchExtension);
+                cts?.Cancel();
+                cts?.Dispose();
+                cts = new CancellationTokenSource();
+                running = Task.Run(() => Execute(cts.Token));
             }
         }
-
     }
 }

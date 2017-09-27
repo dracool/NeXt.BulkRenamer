@@ -4,13 +4,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
-    xmlns:cal="http://www.caliburnproject.org" 
+    xmlns:cal="http://www.caliburnproject.org"
+    xmlns:util="clr-namespace:NeXt.BulkRenamer.Utility"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     x:Class="NeXt.BulkRenamer.Views.MainView"
     mc:Ignorable="d" 
     d:DesignHeight="300"
     d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -19,10 +22,16 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-
+        
         <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="FileSelection" Margin="5" Focusable="False"/>
 
-        <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="Targets" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsTextSearchEnabled="False" Focusable="False">
+        <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" x:Name="Targets"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  IsTextSearchEnabled="False"
+                  Focusable="False">
+            <i:Interaction.Behaviors>
+                <util:VisibleRangeBehavior VisibleRange="{Binding VisibleRange}"/>
+            </i:Interaction.Behaviors>
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <!--Prevent Selection-->
@@ -59,10 +68,16 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <metro:ProgressRing Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" IsActive="{Binding IsLoading}"/>
+        <metro:ProgressRing Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" IsActive="{Binding IsLoading}"/>
 
-        <ContentControl Grid.Row="2" Grid.Column="0" x:Name="PatternSelection" Margin="5"  Focusable="False"/>
-        <Button Grid.Row="2" Grid.Column="1" x:Name="RenameSelected"
+        <metro:MetroProgressBar Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                                Maximum="{Binding MaximumProgressValue}"
+                                Value="{Binding ProgressValue}"
+                                Visibility="{Binding ProgressVisiblility}"
+                                Height="20" />
+        
+        <ContentControl Grid.Row="1" Grid.Column="0" x:Name="PatternSelection" Margin="5"  Focusable="False"/>
+        <Button Grid.Row="1" Grid.Column="1" x:Name="RenameSelected"
                 Content="Rename Selected" Margin="0,5,5,5"/>
     </Grid>
 </UserControl>

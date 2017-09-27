@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
+using NeXt.BulkRenamer.Models.Background;
 
 namespace NeXt.BulkRenamer.Models.Parsing
 {
@@ -14,7 +15,7 @@ namespace NeXt.BulkRenamer.Models.Parsing
 
         private readonly string text;
 
-        public virtual string Process(GroupCollection matches, FileInfo file) => text;
+        public virtual string Process(GroupCollection matches, IReplacementTarget target) => text;
 
         public override string ToString()
         {

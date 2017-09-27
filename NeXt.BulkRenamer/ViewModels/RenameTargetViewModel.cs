@@ -12,17 +12,23 @@ namespace NeXt.BulkRenamer.ViewModels
 {
     internal class RenameTargetViewModel : PropertyChangedBase, IReplacementTarget
     {
-        public RenameTargetViewModel(FileInfo value)
+        public RenameTargetViewModel(string fullPath, int index)
         {
-            Source = value;
-            OriginalName = Source.Name;
+            Index = index;
+            source = new Lazy<FileInfo>(() => new FileInfo(fullPath));
+            OriginalName = Path.GetFileName(fullPath);
         }
 
-        public FileInfo Source { get; }
+        private readonly Lazy<FileInfo> source;
+        public FileInfo Source => source.Value;
         public string OriginalName { get; }
+
+        string IReplacementTarget.SourceName => OriginalName;
 
         [AlsoNotifyFor(nameof(DisplayResultName))]
         public bool Enabled { get; set; } = true;
+
+        public int Index { get; }
 
         [AlsoNotifyFor(nameof(DisplayResultName))]
         public bool Success { get; set; } = true;

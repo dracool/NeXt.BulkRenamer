@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using NeXt.BulkRenamer.Utility;
 
 namespace NeXt.BulkRenamer.Models.Background
 {
@@ -8,6 +10,7 @@ namespace NeXt.BulkRenamer.Models.Background
         void UpdateMatchExtension(bool matchExtension);
         void UpdateRegex(Regex regex);
         void UpdateReplacement(IReplacement replacement);
-        void UpdateTargets(IReadOnlyList<IReplacementTarget> targets);
+        void UpdateTargets(IReadOnlyCollection<IReplacementTarget> targets);
+        void ExecuteFor(IReplacementTarget target);
     }
 }

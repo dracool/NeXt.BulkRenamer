@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using NeXt.BulkRenamer.Models.Background;
 
 namespace NeXt.BulkRenamer.Models.Parsing
 {
@@ -13,16 +14,15 @@ namespace NeXt.BulkRenamer.Models.Parsing
             if (startValue < 0) throw new ArgumentOutOfRangeException(nameof(startValue));
 
             this.format = format;
-            current = startValue - 1;
+            this.startValue = startValue - 1;
         }
 
         private readonly string format;
-
-        private int current;
+        private readonly int startValue;
         
-        public string Process(GroupCollection matches, FileInfo file)
+        public string Process(GroupCollection matches, IReplacementTarget target)
         {
-            return ToRoman(Interlocked.Increment(ref current), format);
+            return ToRoman(startValue + target.Index, format);
         }
         
         private static readonly string[,] RomanNumerals = {

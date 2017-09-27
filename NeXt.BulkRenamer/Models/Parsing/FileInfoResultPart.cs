@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
+using NeXt.BulkRenamer.Models.Background;
 
 namespace NeXt.BulkRenamer.Models.Parsing
 {
@@ -66,9 +67,9 @@ namespace NeXt.BulkRenamer.Models.Parsing
         private readonly Func<FileInfo, string, string> resultFunction;
         private readonly string format;
 
-        public string Process(GroupCollection matches, FileInfo file)
+        public string Process(GroupCollection matches, IReplacementTarget target)
         {
-            return resultFunction(file, format);
+            return resultFunction(target.Source, format);
         }
     }
 }

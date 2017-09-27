@@ -106,7 +106,7 @@ namespace NeXt.BulkRenamer.Models.Parsing
             parts = Complete.Parse(pattern).ToArray();
         }
         
-        public string Apply(Regex regex, string name, FileInfo file)
+        public string Apply(Regex regex, string name, IReplacementTarget target)
         {
             var m = regex.Match(name);
 
@@ -114,7 +114,7 @@ namespace NeXt.BulkRenamer.Models.Parsing
 
             foreach (var part in parts)
             {
-                sb.Append(part.Process(m.Groups, file));
+                sb.Append(part.Process(m.Groups, target));
             }
 
             return sb.ToString();

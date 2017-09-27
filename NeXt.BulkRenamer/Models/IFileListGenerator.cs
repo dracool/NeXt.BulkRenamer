@@ -5,6 +5,6 @@ namespace NeXt.BulkRenamer.Models
 {
     internal interface IFileListGenerator
     {
-        IEnumerable<FileInfo> Generate();
+        IEnumerable<string> Generate();
     }
 }

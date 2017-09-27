@@ -69,10 +69,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -101,7 +98,11 @@
     <Compile Include="Models\Background\IBackgroundEngine.cs" />
     <Compile Include="Models\Background\IReplacement.cs" />
     <Compile Include="Models\Background\IReplacementTarget.cs" />
+    <Compile Include="Models\FileEntry.cs" />
+    <Compile Include="Models\DirectoryEntry.cs" />
     <Compile Include="Models\DirectoryFileListGenerator.cs" />
+    <Compile Include="Utility\TreeViewModel.cs" />
+    <Compile Include="Utility\VisibleRange.cs" />
     <Compile Include="Models\IFileListGenerator.cs" />
     <Compile Include="Models\Parsing\ConstantResultPart.cs" />
     <Compile Include="Models\Parsing\DefaultIndexedTagResultPart.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Models\Parsing\NRomanResultPart.cs" />
     <Compile Include="Models\Parsing\Results.cs" />
     <Compile Include="Models\StaticFileListGenerator.cs" />
+    <Compile Include="Utility\VisibleRangeBehavior.cs" />
     <Compile Include="ViewModels\FileSelectionViewModel.cs" />
     <Compile Include="ViewModels\IRenameTargetViewModelFactory.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -204,6 +206,7 @@
   <ItemGroup>
     <Resource Include="favicon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.2.1.2\build\netstandard1.0\Fody.targets" Condition="Exists('..\packages\Fody.2.1.2\build\netstandard1.0\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

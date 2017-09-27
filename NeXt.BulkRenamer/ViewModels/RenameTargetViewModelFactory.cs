@@ -6,9 +6,9 @@ namespace NeXt.BulkRenamer.ViewModels
 {
     internal class RenameTargetViewModelFactory : IRenameTargetViewModelFactory
     {
-        public RenameTargetViewModel Create(FileInfo value)
+        public RenameTargetViewModel Create(string fullPath, int index)
         {
-            return new RenameTargetViewModel(value);
+            return new RenameTargetViewModel(fullPath, index);
         }
     }
 }

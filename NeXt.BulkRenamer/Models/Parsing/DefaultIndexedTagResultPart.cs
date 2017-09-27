@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using NeXt.BulkRenamer.Models.Background;
 
 namespace NeXt.BulkRenamer.Models.Parsing
 {
@@ -19,7 +20,7 @@ namespace NeXt.BulkRenamer.Models.Parsing
         private readonly int index;
         private readonly IReadOnlyList<DefaultTagFormat> formats;
 
-        public virtual string Process(GroupCollection matches, FileInfo file)
+        public virtual string Process(GroupCollection matches, IReplacementTarget target)
         {
             var val = matches[index].Value;
 

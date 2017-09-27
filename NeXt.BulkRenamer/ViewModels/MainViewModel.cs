@@ -5,8 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Caliburn.Micro;
 using NeXt.BulkRenamer.Models.Background;
+using NeXt.BulkRenamer.Utility;
 
 namespace NeXt.BulkRenamer.ViewModels
 {
@@ -32,8 +34,7 @@ namespace NeXt.BulkRenamer.ViewModels
             FileSelection.PropertyChanged += FileSelectionOnPropertyChanged;
             UpdateFiles();
         }
-
-
+        
         private void FileSelectionOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(FileSelectionViewModel.Files))
@@ -44,15 +45,15 @@ namespace NeXt.BulkRenamer.ViewModels
 
         private async void UpdateFiles()
         {
-            Targets?.Clear();
+            Targets = null;
             IsLoading = true;
-            await Task.Factory.StartNew(() =>
+            await Task.Run(() =>
             {
+                var i = 0;
                 var targets = FileSelection.Files?.Generate()
-                                           .Select(f => renameFactory.Create(f));
+                                           .Select(f => renameFactory.Create(f, i++));
                 Targets = new BindableCollection<RenameTargetViewModel>(targets ?? new List<RenameTargetViewModel>());
-            }, CancellationToken.None,TaskCreationOptions.LongRunning, TaskScheduler.Default);
-            backgroundEngine.UpdateTargets(Targets);
+            });
             IsLoading = false;
         }
 
@@ -61,26 +62,75 @@ namespace NeXt.BulkRenamer.ViewModels
         public PatternSelectionViewModel PatternSelection { get; }
         public BindableCollection<RenameTargetViewModel> Targets { get; private set; }
 
-        public void RenameSelected()
+        private VisibleRange visibleRange;
+        public VisibleRange VisibleRange
         {
-            foreach (var target in Targets.ToList())
+            get => visibleRange;
+            set
             {
-                if (!target.Enabled 
-                    || !target.Success
-                    || string.IsNullOrWhiteSpace(target.ResultName) 
-                    || target.ResultName.StartsWith("<"))
-                continue;
-
-                try
-                {
-                    target.Source.Rename(target.ResultName);
-                }
-                catch (Exception)
-                {
-                    continue;
-                }
-                Targets.Remove(target);
+                visibleRange = value;
+                backgroundEngine.UpdateTargets(VisibleTargets);
             }
+        }
+
+        private IReadOnlyCollection<IReplacementTarget> VisibleTargets
+        {
+            get
+            {
+
+                if (VisibleRange == null) throw new InvalidOperationException();
+
+                return Targets
+                    .Skip(VisibleRange.First)
+                    .Take(VisibleRange.Count)
+                    .ToArray();
+            }
+        }
+        
+        public int MaximumProgressValue { get;  set; }
+        public int ProgressValue { get;  set; }
+        public Visibility ProgressVisiblility { get;  set; }
+
+        public async Task RenameSelected()
+        {
+            ProgressVisiblility = Visibility.Visible;
+            MaximumProgressValue = Targets.Count * 2;
+            ProgressValue = 0;
+            await Task.Run(() =>
+            {
+                foreach (var target in Targets.ToList())
+                {
+                    backgroundEngine.ExecuteFor(target);
+                    ProgressValue++;
+
+                    if (!target.Enabled
+                        || !target.Success
+                        || string.IsNullOrWhiteSpace(target.ResultName)
+                        || target.ResultName.StartsWith("<"))
+                        continue;
+
+                    try
+                    {
+                        target.Source.Rename(target.ResultName);
+                    }
+                    catch (Exception)
+                    {
+                        ProgressValue++;
+                        continue;
+                    }
+                    Targets.Remove(target);
+                    ProgressValue++;
+                }
+            });
+
+            ProgressVisiblility = Visibility.Collapsed;
+        }
+
+        /// <inheritdoc />
+        protected override void OnInitialize()
+        {
+            base.OnInitialize();
+            ProgressVisiblility = Visibility.Collapsed;
         }
     }
 }
